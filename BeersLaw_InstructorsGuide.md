@@ -1,14 +1,14 @@
 ---
 title: "Beers Law Instructor’s Guide"
 author: "David Harvey"
-date: "February 7, 2016"
+date: "February 2, 2016"
 output: 
   pdf_document:
     fig_height: 3.75
 ---
 
 # Introduction
-This learning module provided an introduction to Beer's law that is suitable for either an introductory course or an advanced course in analytical chemistry. The module consists of seven investigations:
+This learning module provided an introduction to Beer's law that is suitable for either an introductory course or an advanced course in analtyical chemistry. The module consists of seven investigations:
 
 * Investigation 0: Recalling Beer's Law
 * Investigation 1: Absorbance Spectra
@@ -42,31 +42,11 @@ A brief description of how this data was created is in order. The power spectrum
 
 The absorbance values for the standard solution of 5.000 mM analyte was simulated in R using a function written for that purpose; the resulting spectrum is the sum of three Gaussian curves centered at 450 nm, 550 nm, and 650 nm, with respective standard deviations of 30 nm, 30 nm, and 20 nm, and respective peak heights of 25, 10, and 50. The resulting absorbance spectrum is shown here in blue (with values stored in the data frame's second column); the dashed red lines show the three Gaussian functions that make up the spectrum.
 
-```{r, echo = FALSE}
-makeSpectrum = function(p.position = c(450, 550, 650), 
-                        p.width = c(30, 30, 20), 
-                        p.height = c(25, 10, 50)){
-  wavelength = seq(400, 750, 1)
-  abs1 = (1/sqrt(2*pi*p.width[1]^2))*
-    exp(-(wavelength - p.position[1])^2/(2*pi*p.width[1]^2)) * p.height[1]
-  abs2 = (1/sqrt(2*pi*p.width[2]^2))*
-    exp(-(wavelength - p.position[2])^2/(2*pi*p.width[2]^2)) * p.height[2]
-  abs3 = (1/sqrt(2*pi*p.width[3]^2))*
-    exp(-(wavelength - p.position[3])^2/(2*pi*p.width[3]^2)) * p.height[3]
-  absorbance = abs1 + abs2 + abs3
-  plot(wavelength, absorbance, type = "l", col="blue", lwd = 2)
-  lines(wavelength, abs1, type = "l", lty = 2, col = "red")
-  lines(wavelength, abs2, type = "l", lty = 2, col = "red")
-  lines(wavelength, abs3, type = "l", lty = 2, col = "red")
-  spectrum = data.frame(wavelength,absorbance)
-  invisible(spectrum)
-}
-std.spec = makeSpectrum()
-```
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png)
 
 This absorbance spectrum was used to generate the $\epsilon b$ values in the data frame's sixth column by dividing by the standard's molar concentration of 0.00500 M, and the transmittance values in the data frame's third column were calculated as $T={ 10 }^{ -A }$. The sample's power spectrum was calculated as ${ P }_{ samp }=T\times { P }_{ ref }$ and stored in the data frame's fifth column.
 
-Finally, the absorbance spectrum for the blank and for each standard was created using the following equation 
+Finally, the absorbance spectrum for the blank and for each standard was created using the followign equation 
 
 $$A=\varepsilon bC\times \left( corr \right)$$
 
@@ -81,71 +61,78 @@ is designed to make obvious a deviation from Beer's law when the analyte's conce
 
 Noise was added to each absorbance value by first converting it to a transmittance, then adding a value drawn from a random normal distribution centered on zero with a standard deviation of 0.002 (0.2%T), and, finally, converting the transmittance back into an absorbance value. The resulting spectra for the blank and for all 13 standards are shown here
 
-```{r, echo = FALSE}
-load(file = "BL.RData")
-matplot(rawdata$wavelength, as.matrix(rawdata[ , 7:20]),
-        type = "l", lty = 1, lwd = 2, col = "blue",
-        xlab = "wavelength", ylab = "absorbance")
-```
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
 
 
 # Investigation 0
 This introductory investigation asks students to remember that Beer's law relates a sample's absorbance to the concentration of the absorbing species, the distance light travels through the sample, and the absorbing species' molar absorptivity. The intent here simply is for students to recall that $A=\epsilon bC$ and to review how these four values relate to each other. 
 
-For the first set of cuvettes, students should recognize that the absorbance values are identical when viewed from the side because $\epsilon$, b, and C are constant, but that when viewed from the top, the absorbance values increase proportionally with the increase in the solution's height. For the second set of cuvettes, students should recognize that the product of b and C is the same for all four cuvettes when viewed from the top, a result that is consistent with a constant value for $\epsilon$.
+For the first set of cuvettes, tudents should recognize that the absorbance values are identical when viewed from the side because $\epsilon$, b, and C are constant, but that when viewed from the top, the absorbance values increase proportionally with the increase in the solution's height. For the second set of cuvettes, students should recognize that the product of b and C is the same for all four cuvettes when viewed from the top, a result that is consistent with a constant value for $\epsilon$.
 
 # Investigation 1
-This investigation presents students with the power spectra for the reference and for the standard solution that is 5.000 mM in analyte, the data for which are available as a .csv file using the "Download" button. To create the transmittance spectrum and the absorbance spectrum, students should use the equations $T={ { P }_{ sam } }/{ { P }_{ ref } }$ and $A=-logT$, which yields the results shown here
+This investigation presents students with the power spectra for the reference and for the standard solution that is 5.000 mM in analyte, the data for which are available as a .csv file using the "Download" button. To create the transmittance spectrum and the absorbance spectrum, students should use the equations $T=\frac { { P }_{ sam } }{ { P }_{ ref } }$ and $A=-logT$, which yields the results shown here
 
-```{r, echo = FALSE}
-plot(rawdata$wavelength, rawdata$trans, type = "l", lwd = 2, col = "blue", ylim = c(0, 1), 
-    xlab = "wavelength (nm)", ylab = "transmittance"
-      )
-```
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
 
 
-```{r,echo = FALSE}
-plot(rawdata$wavelength, rawdata$abs, type = "l", lwd = 2, col = "blue", ylim = c(0, 1.2),
-    xlab = "wavelength (nm)", ylab = "absorbance")
-```
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 Students can check their work by using the radio buttons to display the transmittance or the absorbance spectrum and to view the first six values for each.
 
 # Investigation 2
 In this investigation, students are presented with the absorbance spectra for the blank and for a set of standards with concentrations of 0.200 mM, 0.400 mM, 0.600 mM, 0.800 mM, and 1.000 mM. The slider, which increments in steps of 1 nm, allows students to select the optimum analytical wavelength for quantitative work---this is a wavelength of 649 nm, but students may reasonably select values close to this---and to retrieve the absorbance data for the standards at this wavelength. After plotting the calibration data and completing a regression analysis, students can evaluate their results by checking the box for "Show Model?" and examining the resulting regression model. The calibration curve and the regression model when using a wavelength of 649 nm are shown here
 
-```{r,  echo = FALSE}
-conc = std.conc[c(1, 3, 4, 6, 7, 8)]
-abs = as.numeric(rawdata[250, c(7, 9, 10, 12, 13, 14)])
-plot(conc, abs, pch = 19, cex = 1.2, col = "blue", xlab = "concentration (mM)", ylab = "absorbance")
-abline(lm(abs ~ conc), col = "red", lwd = 2)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+
+
+
 ```
-
-
-```{r, echo = FALSE}
-conc = std.conc[c(1, 3, 4, 6, 7, 8)]
-abs = as.numeric(rawdata[250, c(7, 9, 10, 12, 13, 14)])
-summary(lm(abs ~ conc))
+## 
+## Call:
+## lm(formula = abs ~ conc)
+## 
+## Residuals:
+##          1          2          3          4          5          6 
+## -0.0002444 -0.0003329  0.0004464  0.0004529  0.0003084 -0.0006305 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.0010898  0.0003739   2.915   0.0435 *  
+## conc        0.1988782  0.0006175 322.068 5.58e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.0005166 on 4 degrees of freedom
+## Multiple R-squared:      1,	Adjusted R-squared:      1 
+## F-statistic: 1.037e+05 on 1 and 4 DF,  p-value: 5.576e-10
 ```
 
 # Investigation 3
-This investigation introduces students to the fundamental limitation of Beer's law. Using the sliders, students select the analytical wavelength and adjust the range of concentrations to include in the calibration curve. Highlighting in the calibration plot shows which standards are included in the calibration model. The calibration curve and the regression model using an analytical wavelength of 649 nm, and using the blank and the standards up to and including 2.000 mM analyte, are shown here
+This investigation introduces students to the fundamental limitation of Beer's law. Using the sliders, students select the analytical wavelength and adjust the range of concentrations to include in the calibration curve. Highlighting in the calibration plot shows which standards are included in the calibration model. The calibration curve and the regression model using an analtyical wavelength of 649 nm, and using the blank and the standards up to and including 2.000 mM analyte, are shown here
 
-```{r, echo = FALSE}
-plot(std.conc, rawdata[250, 7:20], pch = 19,
-         col = "blue", xlab = "concentration (mM)", 
-         ylab = "absorbance")
-    abs = as.numeric(rawdata[250, c(7:15)])
-    conc = std.conc[1:9]
-    data = data.frame(conc, abs)
-    mod = lm(data$abs ~ data$conc)
-    abline(mod, col = "blue", lwd = 2)
-    rect(0,-1,2,2, border = NA, col = rgb(255, 229, 204, 100, max = 255))
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+
+
+
 ```
-
-
-```{r, echo = FALSE}
-    summary(lm(data$abs ~ data$conc))
+## 
+## Call:
+## lm(formula = data$abs ~ data$conc)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -0.0023632 -0.0006292  0.0003868  0.0009095  0.0017498 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.0014745  0.0006780   2.175   0.0661 .  
+## data$conc   0.1974762  0.0008003 246.756 4.74e-15 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.00138 on 7 degrees of freedom
+## Multiple R-squared:  0.9999,	Adjusted R-squared:  0.9999 
+## F-statistic: 6.089e+04 on 1 and 7 DF,  p-value: 4.74e-15
 ```
 
 Students may choose to limit the calibration curve to a maximum concentration of 1.000 mM or extend it to a maximum concentration of 4.000 mM; although these are not unreasonable choices, for standards not included in the calibration curve, consistent negative deviations from the calibration equation are evident only for concentrations of analyte greater than 2.000 mM. 
@@ -155,122 +142,36 @@ Here students investigate the effect of using a source that is not monochromatic
 
 $$ T=\frac { { P }_{ sam \lambda 1 }+{ P }_{ sam \lambda 2 } }{ { P }_{ ref \lambda 1 }+{ P }_{ ref \lambda 2 } } =\frac { { {T}_{\lambda1} P }_{ ref \lambda 1 }+{ {T}_{\lambda2} P }_{ ref \lambda 2 } }{ { P }_{ ref \lambda 1 }+{ P }_{ ref \lambda 2 } } =\frac { { \left( { A }^{ - \epsilon bC } \right)}_{\lambda 1} { P }_{ ref \lambda 1 }+{ \left( { A }^{ - \epsilon bC } \right)}_{\lambda 2} { P }_{ ref \lambda 2 } }{ { P }_{ ref \lambda 1 }+{ P }_{ ref \lambda 2 } } $$
 
-With this equation, it is easy to see that a negative deviation from Beer's law occurs when the the analyte absorbs less strongly at the interfering wavelength than at the analytical wavelength, and that the extent of the deviation is amplified when the source's power at the interfering wavelength is greater than its power at the analytical wavelength. For example, as shown here
+With this equation, it is easy to see that a negative deviation from Beer's law occurs when the the analyte absorbs less strongly at the interfering wavelength than at the analytical wavelength, and that the extent of the deviation is amplified when the source's power at the interfering wavelength is greater than its power at the analtyical wavelength. For example, as shown here
 
-```{r, echo = FALSE}
-p1 = rawdata$p_ref[250]
-p2 = rawdata$p_ref[200]
-eb1 = rawdata$eb[250]/1000
-eb2 = rawdata$eb[200]/1000
-conc = seq(0,2,0.02)
-abs1 = -log10((p1*10^-(eb1*conc))/(p1))
-plot(conc, abs1, type = "l", lty = 1, lwd = 2, col = "red", xlab = "concentration (mM)", 
-     ylab = "absorbance", main = "analytical wavelength with negative offset")
-abs2 = -log10((p1*10^-(eb1*conc) + p2*10^-(eb2*conc))/(p1 + p2))
-lines(conc, abs2, lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("analytical wavelength only", "both wavelengths"),
-      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))    
-```
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
 
-```{r, echo = FALSE}
-p1 = rawdata$p_ref[250]
-p2 = rawdata$p_ref[300]
-eb1 = rawdata$eb[250]/1000
-eb2 = rawdata$eb[300]/1000
-conc = seq(0,2,0.02)
-abs1 = -log10((p1*10^-(eb1*conc))/(p1))
-plot(conc, abs1, type = "l", lty = 1, lwd = 2, col = "red", xlab = "concentration (mM)", 
-     ylab = "absorbance", main = "analytical wavelength with positive offset")
-abs2 = -log10((p1*10^-(eb1*conc) + p2*10^-(eb2*conc))/(p1 + p2))
-lines(conc, abs2, lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("analytical wavelength only", "both wavelengths"),
-      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
-```    
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
 
-an analytical wavelength of 649 nm and an offset of +50 nm results in a more negative deviation than an analytical wavelength of 649 nm and an offset of -50 nm because, even though the values for $\epsilon b$ are similar for both offsets, ${P}_{ref}$ for the source is greater at 699 nm than at 599 nm.
+an analytical wavelength of 649 nm and an offset of +50 nm results in a more negative deviation than an analytical wavelength of 649 nm and an offest of -50 nm because, even though the values for $\epsilon b$ are similiar for both offsets, ${P}_{ref}$ for the source is greater at 699 nm than at 599 nm.
 
 # Investigation 5
-This investigation allows students to explore how stray light affects the linearity of a Beer's law calibration curve. Using the same general approach as in Investigation 4, but replacing ${ P }_{ ref \lambda 2 }$ with ${P}_{stray}$, students should recognize that the effect is greatest when the absorbance is at its greatest. A typical result when using an analytical wavelength of 649 nm and 20% stray light is shown here
+This investigation allows students to explore how stray light affects the linearity of a Beer's law calibration curve. Using the same general approach as in Investigation 4, but replacing ${ P }_{ ref \lambda 2 }$ with ${P}_{stray}, students should recognize that the effect is greatest when the absorbance is at its greatest. A typical result when using an analytical wavelength of 649 nm and 20% stray light is shown here
 
-```{r, echo = FALSE}
-p_ref = rawdata$p_ref[250]
-p_stray = p_ref * 20/100
-eb = rawdata$eb[250]/1000
-conc = seq(0,2,0.02) 
-abs1 = -log10((p_ref * 10^-(eb*conc))/p_ref)
-abs2 = -log10((p_ref * 10^-(eb*conc) + p_stray)/(p_ref + p_stray))
-plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)", 
-     ylab = "absorbance")
-lines(conc, abs2, lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("without stray light", "with stray light"),
-           col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
-```
-
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
 
 # Investigation 6
 The final investigation allows students to explore the effect of an analyte's acid-base chemistry on its Beer's law calibration curve. Setting the analytical wavelength to 649 nm and using the default value for the analyte's $p{K}_{a}$ value gives the following result when the only the analyte's weak acid, HA, or its weak base, ${A}^{-}$, form is the absorbing species
 
-```{r, echo = FALSE}
-p_ref = rawdata$p_ref[250]
-eb = rawdata$eb[250]/1000
-conc = seq(0,2,0.02) 
-abs1 = -log10((p_ref * 10^-(eb*conc))/p_ref)
-ka = 10^-5
-root = rep(0,101)
-for (i in 1:101) {
-eqn = function(x){
-        x^2 + ka * x - ka * conc[i]/1000
-      }
-root[i] = uniroot(eqn, lower = 0, upper = 0.1, tol = 1e-18)$root * 1000
-}
-```
-
-```{r, echo = FALSE}
-plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)", 
-     ylab = "absorbance")
-conc_ha = (conc - root)
-abs2 = -log10((p_ref * 10^-(eb*conc_ha))/p_ref)
-lines(conc, abs2, type = "l", lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only HA absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
-```
 
 
-```{r, echo = FALSE}
-plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)", 
-     ylab = "absorbance")
-conc_a = root
-abs2 = -log10((p_ref * 10^-(eb*conc_a))/p_ref)
-lines(conc, abs2, type = "l", lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only A absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2,2))
-```
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png)
+
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 
 Students should recognize that the negative deviation when HA is the sole absorbing species indicates that the concentration of HA does not increase proportionately with the analyte's total concentration. With additional thought---and some subtle hints, as needed---students should recognize that increasing the analyte's concentration leads to an increase in pH, which, in turn, implies that a greater amount of the weak acid, HA, has dissociated into its weak base form, ${A}^{-}$. Confirmation of this is seen in the plot where only ${A}^{-}$ absorbs as there is a small increase in absorbance as the analyte's concentration increases. Students should understand that the calibration curve has a smaller negative deviation when only ${A}^{-}$ absorbs because most of the analyte remains as HA. Adjusting the $p{K}_{a}$ to smaller values increases the effects described above, and adjusting the $p{K}_{a}$ to larger values decreases the effects described above; students should be able to explain this in terms of the analyte's relative strength as a weak acid.
 
 Finally, students should recognize that buffering the standards will allow for more control over the relative concentrations of HA and of ${A}^{-}$; thus, as shown here, when HA is the only absorbing species, buffering to a pH of 3 results in a calibration curve nearly identical to that in the absence of acid-base chemistry
 
-```{r, echo = FALSE}
-h = 10^-3
-alpha_ha = h^2/(h^2 + ka * h)
-alpha_a = 1 - alpha_ha
-conc_ha = alpha_ha * conc
-abs2 = -log10((p_ref * 10^-(eb*conc_ha))/p_ref) 
-plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)", 
-     ylab = "absorbance")
-lines(conc, abs2, type = "l", lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only HA absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
-```
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
 
-```{r, echo = FALSE}
-h = 10^-7
-alpha_ha = h^2/(h^2 + ka * h)
-alpha_a = 1 - alpha_ha
-plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)", 
-     ylab = "absorbance")
-conc_a = alpha_a * conc
-abs2 = -log10((p_ref * 10^-(eb*conc_a))/p_ref)
-lines(conc, abs2, type = "l", lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only A absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2,2))
-```
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
 
 and buffering to a pH of 9, when ${A}^{-}$ is the only absorbing species, also results in a calibration curve that is nearly identical to that in the absence of acid-base chemistry.
