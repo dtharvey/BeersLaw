@@ -1,7 +1,7 @@
 library(shiny)
 
 # load in the file BL.RData, which contains two objects: rawdata
-# and std.calc
+# and std.conc
 
 # rawdata is a data frame with 351 rows (which span wavelengths from
 # 400 nm to 750 nm), and 20 columns for the wavelengths, noise-free 
@@ -11,7 +11,7 @@ library(shiny)
 # standards, each of which included random noise drawn from a normal 
 # distribution characterized by a standard deviation of 0.2% T.
 
-# std.calc is a vector of length 14 that contains the concentrations
+# std.conc is a vector of length 14 that contains the concentrations
 # of analyte in a blank and in 13 standards
 
 load(file = "BL.RData")

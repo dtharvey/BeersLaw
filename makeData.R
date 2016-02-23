@@ -18,7 +18,7 @@ for (j in seq(400,740,10)) {
     power[j + i - 399] = p
   }
   wavelength[351] = 750
-  power[351] = source$power[351]
+  power[351] = source$power[36]
 }
 source = data.frame(wavelength, power)
 plot(source, type = "l", col = "blue", lwd = 2, ylim = c(0,1))
