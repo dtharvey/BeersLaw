@@ -47,7 +47,7 @@ shinyServer(function(input, output) {
         rawdata$wavelength, rawdata$p_sam,
         type = "l", lwd = 2, col = "red"
       )
-      legend(x = "topleft", legend = c("reference", "sample"),
+      legend(x = "topleft", legend = c("reference", "sample"), bty = "n",
              col = c("blue", "red"), lty = c(1, 1), lwd = c(2, 2)
       )
     }
@@ -182,7 +182,7 @@ shinyServer(function(input, output) {
     legend(
       x = "topleft", 
       legend = c("analytical wavelength", "interfering wavelength"),
-      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2)
+      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), bty = "n"
     )
   })
   
@@ -202,7 +202,7 @@ shinyServer(function(input, output) {
     legend(
       x = "topleft", 
       legend = c("analytical wavelength only", "both wavelengths"),
-      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2)
+      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), bty = "n"
     )
   })
   
@@ -217,7 +217,7 @@ shinyServer(function(input, output) {
     legend(
       x = "topleft", 
       legend = c("analytical wavelength", "interfering wavelength"),
-      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2)
+      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), bty = "n"
     )
   })
   
@@ -237,7 +237,7 @@ shinyServer(function(input, output) {
     legend(
       x = "topleft", 
       legend = c("analytical wavelength only", "both wavelengths"),
-      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2)
+      col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), bty = "n"
     )
   })
   
@@ -264,7 +264,8 @@ shinyServer(function(input, output) {
     lines(conc, abs2, lty = 2, lwd = 2, col = "red")
     legend(x = "topleft", 
            legend = c("without stray light", "with stray light"),
-           col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
+           col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), 
+           bty = "n")
   })
   
   caldata_6a = reactive({
@@ -297,14 +298,6 @@ shinyServer(function(input, output) {
   
   # actions for Investigation 7
   
-  # output$plot_7a = renderPlot({
-  #   matplot(rawdata$wavelength, as.matrix(rawdata[ , 7:15]),
-  #           type = "l", lty = 1, col = "blue", lwd = 2,
-  #           xlab = "wavelength (nm)", ylab = "absorbance",
-  #           ylim = c(0, 0.4))
-  #   abline(v = input$slider_7a, lty = 1, col = "red", lwd = 2)
-  # })
-  
   output$plot_7b = renderPlot({
     if (input$radio_7b == "no") {
     p_ref = rawdata$p_ref[649 - 399]
@@ -330,7 +323,8 @@ shinyServer(function(input, output) {
       legend(x = "topleft", 
              legend = c("no acid-base chemistry", 
                         "w/ acid-base chemistry: only HA absorbs"), 
-             col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
+             col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), 
+             bty = "n")
     } else {
       conc_a = root
       abs2 = -log10((p_ref * 10^-(eb*conc_a))/p_ref)
@@ -338,7 +332,8 @@ shinyServer(function(input, output) {
       legend(x = "topleft",
              legend = c("no acid-base chemistry",
                         "w/ acid-base chemistry: only A absorbs"),
-             col = c("red", "red"), lty = c(1, 2), lwd = c(2,2))
+             col = c("red", "red"), lty = c(1, 2), lwd = c(2,2), 
+             bty = "n")
     }
     } else {
       p_ref = rawdata$p_ref[649 - 399]
@@ -359,7 +354,8 @@ shinyServer(function(input, output) {
         legend(x = "topleft", 
                legend = c("no acid-base chemistry", 
                           "w/ acid-base chemistry: only HA absorbs"), 
-               col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
+               col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2),
+               bty = "n")
       } else {
         conc_a = alpha_a * conc
         abs2 = -log10((p_ref * 10^-(eb*conc_a))/p_ref)
@@ -367,9 +363,14 @@ shinyServer(function(input, output) {
         legend(x = "topleft",
                legend = c("no acid-base chemistry",
                           "w/ acid-base chemistry: only A absorbs"),
-               col = c("red", "red"), lty = c(1, 2), lwd = c(2,2))
+               col = c("red", "red"), lty = c(1, 2), lwd = c(2,2), 
+               bty = "n")
       }
     }
   })
+  
+  output$image_reva = renderImage({
+    list(src = "www/abstranpower.png")
+  }, deleteFile = FALSE)
   
 })

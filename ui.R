@@ -4,8 +4,7 @@ shinyUI(fluidPage(
   withMathJax(),
   tags$style(HTML("
                   p {
-                  font-size: 18px;
-                  font-weight: bold;
+                  font-size: 16px;
                   }
   
                   h4 {
@@ -38,35 +37,30 @@ shinyUI(fluidPage(
                  of investigations:</p>"),
                HTML("<ul> 
                     <li> 
-                    <h4>Investigation 1: Recalling Beer's Law</h4>
+                    <p>Investigation 1: Recalling Beer's Law</p>
                     </li> 
                     <li> 
-                    <h4>Investigation 2: Absorbance Spectra</h4>
+                    <p>Investigation 2: Absorbance Spectra</p>
                     </li>
                     <li> 
-                    <h4>Investigation 3: Calibration Curves</h4>
+                    <p>Investigation 3: Calibration Curves</p>
                     </li>
                     <li> 
-                    <h4>Investigation 4: Fundamental Limitation to 
-                     Beer's Law</h4>
+                    <p>Investigation 4: Fundamental Limitation to 
+                     Beer's Law</p>
                     </li>
                     <li> 
-                    <h4>Investigation 5: Instrumental Limitation to 
-                      Beer's Law: Polychromatic Radiation</h4>
+                    <p>Investigation 5: Instrumental Limitation to 
+                      Beer's Law: Polychromatic Radiation</p>
                     <li>
-                    <h4>Investigation 6: Instrumental Limitation to
-                      Beer's Law: Stray Radiation</h4>
+                    <p>Investigation 6: Instrumental Limitation to
+                      Beer's Law: Stray Radiation</p>
                     </li>
                     <li>
-                    <h4>Investigation 7: Chemical Limitation to Beer's
-                      Law</h4>
+                    <p>Investigation 7: Chemical Limitation to Beer's
+                      Law</p>
                     </li>
-                    </ul>"),
-               HTML("<p>You will find a more detailed discussion of 
-                      the topics covered in this learning module in 
-                      Chapter 10 of <em>Analytical Chemistry 2.0</em>, 
-                      which is available using this 
-                      <a href = http://bit.ly/1r3wJoz>link</a>.</p>")
+                    </ul>")
              )
     )),
     tabPanel("Investigation 1",
@@ -102,7 +96,7 @@ shinyUI(fluidPage(
                   ),
                  helpText(
                    "2. Although the meanings of absorbance, pathlength,  
-                   and concentration are self-explantory, the meaning
+                   and concentration are self-explanatory, the meaning
                    of molar absorptivity is less so. Define molar 
                    absorptivity and give its units."
                  ),
@@ -145,12 +139,13 @@ shinyUI(fluidPage(
                  helpText(
                   "2. Use the button below to download the data for 
                   \\(\\textit{P}_{ref}\\) and for 
-                  \\(\\textit{P}_{sam}\\) and create two plots, one 
-                  that shows the sample's transmittance as a function 
-                  of the wavelength and one that shows the sample's 
-                  absorbance as a function of the wavelength. When 
-                  your are finished, you can use the radio buttons 
-                  below to check your work."
+                  \\(\\textit{P}_{sam}\\) as a .csv file that you can 
+                  open in Excel (or other spreadsheet program), and 
+                  create two plots, one that shows the sample's 
+                  transmittance as a function of the wavelength and one 
+                  that shows the sample's absorbance as a function of 
+                  the wavelength. When you are finished, you can use the 
+                  radio buttons below to check your work."
                  ),
                  radioButtons(
                    "radio_2a", label = h4("Display Format"),
@@ -166,7 +161,7 @@ shinyUI(fluidPage(
                 plotOutput("plot_2a"),
                 br(),
                 helpText("The source of visible light is a 
-                tungesten-halogen lamp. The original power spectrum for 
+                tungsten-halogen lamp. The original power spectrum for 
                 the source is from Thor labs (www.thorlabs.com) 
                 and gives power as a function of wavelength from 
                 400 nm to 2600 nm in 10 nm intervals. This data 
@@ -215,7 +210,8 @@ shinyUI(fluidPage(
                  helpText(
                   "1. The slider's default position is a 
                   wavelength of 450 nm. Use the absorbance data in 
-                  the table to prepare a calibration curve and complete
+                  the table to prepare a calibration curve at this 
+                  wavelength and complete
                   a regression analysis to determine the calibration
                   curve's equation. When you are finished, use the 
                   check box to review your work."),
@@ -360,7 +356,7 @@ shinyUI(fluidPage(
                   just two wavelengths of source radiation; instead 
                   it passes a finite band of radiation. For a 
                   spectrophotometer with a scanning monochromator, how 
-                  might you adjust the operating conditions of so 
+                  might you adjust the operating conditions so 
                   the source appears more monochromatic? Are there are 
                   any trade-offs to your approach?"
                  )
@@ -397,7 +393,7 @@ shinyUI(fluidPage(
                   "Another important assumption in the derivation of 
                   Beer's law is that all radiation that reaches the 
                   detector passes through the sample; light that 
-                  reaches the detector without passing throught the
+                  reaches the detector without passing through the
                   sample is called stray light. For this investigation 
                   we will assume that  stray light is not absorbed by 
                   the analyte and that the relative amount of stray 
@@ -503,7 +499,7 @@ shinyUI(fluidPage(
                  helpText(
                   "5. Suppose your analyte has a \\(\\textrm{p}{K}_{a}\\) 
                   of 7 and that only its conjugate weak base form, 
-                  \\(\\textrm{A}^{-}\\), absorbs. Sugest an appropriate pH 
+                  \\(\\textrm{A}^{-}\\), absorbs. Suggest an appropriate pH 
                   to buffer the calibration standards so that there is 
                   no deviation from Beer's law. Explain the reason(s) 
                   for your choice. You can check your results using 
@@ -536,6 +532,53 @@ shinyUI(fluidPage(
                              max = 14, step = 0.2, value = 7)
                )
                )
+             ),
+    tabPanel("Review",
+             column(
+               width = 6,
+               h5("Summary"),
+               HTML("<p>Having completed this learning module, you 
+                    should understand the relationship between 
+                    absorbance, transmittance, and power, and the 
+                    relationship between absorbance and concentration 
+                    that make up Beer's law. You also should appreciate 
+                    the limitations inherent in Beer's law: the 
+                    fundamental limitation that applies at high 
+                    concentrations of analyte, the instrumental 
+                    limitations associated with polychromatic radiation 
+                    and stray radiation, and the chemical limitations 
+                    that result from equilibrium reactions that involve 
+                    the analyte. You should appreciate, as well, how 
+                    these limitations are managed.</p>"),
+               h5("Additional Resources"),
+               HTML("<p>You will find a more detailed discussion of 
+                      the topics covered in this learning module in 
+                    Chapter 10 of <em>Analytical Chemistry 2.0</em>, 
+                    which is available using this 
+                    <a href = http://bit.ly/1r3wJoz>link</a>.</p>"),
+               HTML("<p>For a much more thorough, and mathematically 
+                    rigorous treatement of the limitations to Beer's 
+                    law, see Chapter 13 of Ingle, J.D.; Crouch, S. R. 
+                    <em>Spectrochemical Analysis</em>, Prentice Hall: 
+                    Englewood Cliffs, NJ, <b>1988</b>.</p>"),
+               HTML("<p>For another view of the relationship between 
+                    absorbance, transmittance, and power, see the Shiny app 
+                    <a href = https://dl.dropboxusercontent.com/u/9630480/Site/SabbaticalProject/SabProjIndex.html>AbsTranPower</a>, a screen shot of which is shown 
+                    on the right.</p>")
+             ),
+             column(
+               width = 6,
+               align = "center",
+               br(),
+               br(),
+               br(),
+               br(),
+               br(),
+               br(),
+               br(),
+               br(),
+               imageOutput("image_reva", width = "500px")
+             )
              )
   )
 ))

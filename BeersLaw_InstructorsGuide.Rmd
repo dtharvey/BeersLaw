@@ -18,14 +18,12 @@ This learning module provides an introduction to Beer's law that is designed for
 * Investigation 6: Instrumental Limitation to Beer's Law: Stray Light
 * Investigation 7: Chemical Limitation to Beer's Law
 
-The learning module is programmed in R [(www.r-project.org)](https://www.r-project.org/) using the Shiny package, which allows for interactive features. Each investigation includes a brief introduction, an explanation of the controls---sliders, radio buttons, and check boxes--- available to the user and the type of plots, tables, and statistical summaries produced by the underlying code. Each investigation also includes one or more questions to answer.
+The learning module is programmed in R [(www.r-project.org)](https://www.r-project.org/) using the `Shiny` package, which allows for interactive features. Each investigation includes a brief introduction, an explanation of the controls---sliders, radio buttons, and check boxes--- available to the user and the type of plots, tables, and statistical summaries produced by the underlying code. Each investigation also includes one or more questions to answer.
 
 The purpose of this document is to provide instructors with additional background on the program's features and data sets, to provide representative examples of the results students might generate, and to provide suggestions of possible ways to make use of the module's investigations.
 
-Note: The dimensions for the figures in this document are not the same as their respective dimensions when running the application in a browser; as a result, the legends included with the figures in this document partially overlap the data, although not in a way that obscures meaning.
-
 # Some Background Details on the Learning Module's Data
-The data included with this learning module consists of two objects: a data frame with 351 rows and 20 columns, and a numerical vector with 14 values. As shown here, each row of the data frame provides information for one wavelength in the range 400 nm to 750 nm, and each of the 20 columns provides values for a different variable:
+The data set included with this learning module consists of two objects: a dataframe with 351 rows and 20 columns, and a numerical vector with 14 values. As shown here, each row of the data frame provides information for one wavelength in the range 400 nm to 750 nm, and each of the 20 columns provides values for a different variable:
 
 * Column 1: wavelengths
 * Column 2: absorbance values for a 5.000 mM standard solution of the analyte (noise free)
@@ -42,7 +40,7 @@ For those wishing to explore the data, files are available at the application's 
 
 A brief description of how this data was created is in order. The power spectrum for the reference is taken from the emission profile of a tungsten-halogen visible source; the original data is from [Thor labs](http://www.thorlabs.com/) for their model SLS201 light source and gives power as a function of wavelength from 400 nm to 2600 nm in 10 nm intervals. This data was trimmed to the range 400 nm to 750 nm and additional values were added at 1 nm intervals using a linear interpolation over each 10 nm interval. The resulting power spectrum was assigned as the reference and is stored in the data frame's fourth column.
 
-The absorbance values for the standard solution of 5.000 mM analyte was simulated in R using a function written for that purpose; the resulting spectrum is the sum of three Gaussian curves centered at 450 nm, 550 nm, and 650 nm, with respective standard deviations of 30 nm, 30 nm, and 20 nm, and respective peak heights of 25, 10, and 50. The resulting absorbance spectrum is shown here in blue (with values stored in the data frame's second column) and has a maximum absorbance at 649 nm; the dashed red lines show the three Gaussian functions that make up the spectrum.
+The absorbance values for the standard solution of 5.000 mM analyte were simulated in R using a function written for that purpose; the resulting spectrum is the sum of three Gaussian curves centered at 450 nm, 550 nm, and 650 nm, with respective standard deviations of 30 nm, 30 nm, and 20 nm, and respective peak heights of 25, 10, and 50. The resulting absorbance spectrum is shown here in blue (with values stored in the data frame's second column) and has a maximum absorbance at 649 nm; the dashed red lines show the three Gaussian functions that make up the spectrum, although these are not relevant to the remainder of the learning module.
 
 ```{r, echo = FALSE}
 makeSpectrum = function(p.position = c(450, 550, 650), 
@@ -214,14 +212,14 @@ lines(conc, abs2, lty = 2, lwd = 2, col = "red")
 lines(conc, abs3, lty = 3, lwd = 2, col = "red")
 legend(x = "topleft", legend = c("analytical wavelength only", "w/ -50 nm offset", 
                                  "w/ +50 nm offset"),
-      col = c("red", "red", "red"), lty = c(1, 2, 3), lwd = c(2, 2, 3))    
+      col = c("red", "red", "red"), lty = c(1, 2, 3), lwd = c(2, 2, 3), bty = "n")    
 ```
 
 because the absorbance peak is not symmetrical around the wavelength of maximum absorbance such that the absorbance of 0.371 at 699 nm is much smaller than the absorbance of 0.448 at 599 nm.
 
-**Question 3.** Students should discover two things as they explore this question. First, as the offset increases from its default value of $\pm 0$ nm, the negative offset yields a negative deviation from Beer's law and the positive offset yields a positive deviation from Beer's law; students should be able to explain this using the same logic as in Question 2. Second, between a positive offset of +45 nm and a positive offset of +50 nm, there is no apparent deviation from Beer's law; students should recognize that there is no deviation from Beer's law if the absorbance at the analytical wavelength is identical to the absorbance at the interfering wavelength.   
+**Question 3.** Students should discover two things as they explore this question. First, as the offset increases from its default value of $\pm 0$ nm, the negative offset yields a negative deviation from Beer's law and the positive offset yields a positive deviation from Beer's law; students should be able to explain this using the same logic as in Question 2. Second, for a positive offset of +45 nm and a positive offset of +50 nm, there is little apparent deviation from Beer's law; students should recognize that there is no deviation from Beer's law if the absorbance at the analytical wavelength is identical to the absorbance at the interfering wavelength.   
 
-**Question 4.** Students should recall that a scanning monochromator's slit width determines the range of wavelengths that pass through the sample, and that a narrower slit width will make the source radiation appear less polychromatic, resulting in a smaller deviation from Beer's law; they should recognize, as well, that a narrower slit width will decrease the total power of source radiation that reaches the detector, which increases the impact of noise.
+**Question 4.** Students should recall that a scanning monochromator's slit width determines the range of wavelengths that pass through the sample, and that a narrower slit width will make the source radiation appear less polychromatic, resulting in a smaller deviation from Beer's law; they should recognize, as well, that a narrower slit width will decrease the total power of source radiation that reaches the detector, which increases the importance of noise.
 
 # Investigation 6
 This investigation allows students to explore how stray light affects the linearity of a Beer's law calibration curve using sliders to select the analytical wavelength and the amount of stray light, which is given as a percentage of ${P}_{ref}$ for the analytical wavelength.
@@ -245,7 +243,7 @@ plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)",
      ylab = "absorbance")
 lines(conc, abs2, lty = 2, lwd = 2, col = "red")
 legend(x = "topleft", legend = c("without stray light", "with stray light"),
-           col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
+           col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), bty = "n")
 ```
 
 Using the values from the tables, in the presence of 50% stray light the 2.000 mM standard's absorbance is 55.4% of its absorbance in the absence of stray light; for the 0.200 mM standard, the absorbance in the presence of 50% stray light is 65.7% of its absorbance in the absence of stray light.
@@ -257,7 +255,7 @@ The final investigation allows students to explore the effect of an analyte's ac
 
 **Question 1.** Students should recognize that the negative deviation when HA is the sole absorbing species indicates that the concentration of HA is not the same as the analyte's reported total concentration. With additional thought---and some hints, as needed---students should recognize that because HA is a weak acid, some of it has dissociated into its weak base form, ${\textrm{A}}^{-}$.
 
-**Question 2.** Students should predict that the stronger HA is an acid, the greater the deviation from Beer's law when HA is the absorbing species; thus, they should predict that the deviation is greater when HA has a p${K}_{a}$ of 3 and smaller when HA has a p${K}_{a}$ of 7. 
+**Question 2.** Students should predict that the stronger HA is as an acid, the greater the deviation from Beer's law when HA is the absorbing species; thus, they should predict that the deviation is greater when HA has a p${K}_{a}$ of 3 and smaller when HA has a p${K}_{a}$ of 7. 
 
 **Question 3.** Although both sets of conditions result in a negative deviation from Beer's law, the deviation is concave when HA is the absorbing species
 
@@ -282,7 +280,7 @@ plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)",
 conc_ha = (conc - root)
 abs2 = -log10((p_ref * 10^-(eb*conc_ha))/p_ref)
 lines(conc, abs2, type = "l", lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only HA absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2))
+legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only HA absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2, 2), bty = "n")
 ```
 
 and convex when ${A}^{-}$ is the absorbing species
@@ -293,7 +291,7 @@ plot(conc, abs1, type = "l", lwd = 2, col = "red", xlab = "concentration (mM)",
 conc_a = root
 abs2 = -log10((p_ref * 10^-(eb*conc_a))/p_ref)
 lines(conc, abs2, type = "l", lty = 2, lwd = 2, col = "red")
-legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only A absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2,2))
+legend(x = "topleft", legend = c("no acid-base chemistry", "w/ acid-base chemistry: only A absorbs"), col = c("red", "red"), lty = c(1, 2), lwd = c(2,2), bty = "n")
 ```
 
 Students can explain this behavior by writing the ${K}_{a}$ expression
