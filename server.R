@@ -15,6 +15,7 @@ library(shiny)
 # of analyte in a blank and in 13 standards
 
 load(file = "BL.RData")
+rawdata$wavelength = as.integer(rawdata$wavelength)
 
 shinyServer(function(input, output) {
   
@@ -70,7 +71,7 @@ shinyServer(function(input, output) {
   
   output$table_2a = renderTable({
     datasetInput() 
-  }, digits = c(1, 0, 4, 4), align = rep("c", 4))
+  }, digits = 4, align = "c", striped = TRUE)
   
   output$download_2a = downloadHandler(
     filename = "beersLaw.csv",
@@ -118,7 +119,7 @@ shinyServer(function(input, output) {
   
   output$table_3a = renderTable({
     caldata_3a()
-  }, digits = c(1, 4, 4), align = rep("c", 3))
+  }, digits = 4, align = "c", striped = TRUE)
   
   output$table_3b = renderPrint({
     calmodel_3a()
@@ -290,11 +291,11 @@ shinyServer(function(input, output) {
   
   output$table_6a = renderTable({
     caldata_6a()
-  }, align = c("c", "c", "c"), digits = c(1, 1, 4))
+  }, align = "c", digits = 4, striped = TRUE)
   
   output$table_6b = renderTable({
     caldata_6b()
-  }, align = c("c", "c", "c"), digits = c(1, 1, 4))
+  }, align = "c", digits = 4, striped = TRUE)
   
   # actions for Investigation 7
   
